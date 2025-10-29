@@ -1,24 +1,133 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="13122.16" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="BYZ-38-t0r">
+<document type="com.apple.InterfaceBuilder3.CocoaTouch.Storyboard.XIB" version="3.0" toolsVersion="23727" targetRuntime="iOS.CocoaTouch" propertyAccessControl="none" useAutolayout="YES" useTraitCollections="YES" useSafeAreas="YES" colorMatched="YES" initialViewController="H0m-ze-EU9">
+    <device id="retina6_12" orientation="portrait" appearance="light"/>
     <dependencies>
-        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="13104.12"/>
+        <plugIn identifier="com.apple.InterfaceBuilder.IBCocoaTouchPlugin" version="23721"/>
         <capability name="Safe area layout guides" minToolsVersion="9.0"/>
+        <capability name="System colors in document resources" minToolsVersion="11.0"/>
         <capability name="documents saved in the Xcode 8 format" minToolsVersion="8.0"/>
     </dependencies>
     <scenes>
-        <!--View Controller-->
+        <!--Tab Bar Controller-->
+        <scene sceneID="apZ-eA-7xp">
+            <objects>
+                <tabBarController id="H0m-ze-EU9" sceneMemberID="viewController">
+                    <tabBar key="tabBar" contentMode="scaleToFill" insetsLayoutMarginsFromSafeArea="NO" id="OCf-BG-gFs">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="49"/>
+                        <autoresizingMask key="autoresizingMask"/>
+                        <color key="backgroundColor" white="0.0" alpha="0.0" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                    </tabBar>
+                    <connections>
+                        <segue destination="BYZ-38-t0r" kind="relationship" relationship="viewControllers" id="lVQ-5X-k68"/>
+                        <segue destination="noM-bF-iY4" kind="relationship" relationship="viewControllers" id="lIj-7V-ciC"/>
+                    </connections>
+                </tabBarController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="FMM-16-IA3" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="-805" y="477"/>
+        </scene>
+        <!--Tracker List View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="ViewController" customModuleProvider="target" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TrackerListViewController" customModule="Tracker" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
-                        <rect key="frame" x="0.0" y="0.0" width="375" height="667"/>
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
-                        <color key="backgroundColor" xcode11CocoaTouchSystemColor="systemBackgroundColor" cocoaTouchSystemColor="whiteColor"/>
+                        <subviews>
+                            <searchBar contentMode="redraw" searchBarStyle="minimal" text="" translatesAutoresizingMaskIntoConstraints="NO" id="KPf-78-Js3">
+                                <rect key="frame" x="16" y="136" width="361" height="56"/>
+                                <textInputTraits key="textInputTraits"/>
+                                <connections>
+                                    <outlet property="delegate" destination="BYZ-38-t0r" id="Mgd-T8-hin"/>
+                                </connections>
+                            </searchBar>
+                            <button opaque="NO" contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" lineBreakMode="middleTruncation" hasAttributedTitle="YES" translatesAutoresizingMaskIntoConstraints="NO" id="n7I-it-shM">
+                                <rect key="frame" x="6" y="45" width="42" height="42"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="42" id="I0R-Ij-Tdl"/>
+                                    <constraint firstAttribute="height" constant="42" id="MgO-gr-hIT"/>
+                                </constraints>
+                                <inset key="imageEdgeInsets" minX="0.0" minY="0.0" maxX="2.2250738585072014e-308" maxY="0.0"/>
+                                <state key="normal" image="Button plus">
+                                    <attributedString key="attributedTitle"/>
+                                </state>
+                            </button>
+                            <datePicker contentMode="scaleToFill" contentHorizontalAlignment="center" contentVerticalAlignment="center" datePickerMode="date" style="compact" translatesAutoresizingMaskIntoConstraints="NO" id="84k-ns-nNP">
+                                <rect key="frame" x="300" y="49" width="77" height="34"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="77" id="gMg-8K-bqb"/>
+                                    <constraint firstAttribute="height" constant="34" id="koN-4w-D8B"/>
+                                </constraints>
+                            </datePicker>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Трекеры" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WsO-op-Eio">
+                                <rect key="frame" x="16" y="88" width="272" height="41"/>
+                                <fontDescription key="fontDescription" type="boldSystem" pointSize="34"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                            <imageView clipsSubviews="YES" userInteractionEnabled="NO" contentMode="scaleAspectFit" horizontalHuggingPriority="251" verticalHuggingPriority="251" image="Star" translatesAutoresizingMaskIntoConstraints="NO" id="hRp-9T-5Fs">
+                                <rect key="frame" x="156.66666666666666" y="412" width="80" height="80"/>
+                                <constraints>
+                                    <constraint firstAttribute="width" constant="80" id="8dB-QX-fax"/>
+                                    <constraint firstAttribute="height" constant="80" id="egY-o6-pj9"/>
+                                </constraints>
+                            </imageView>
+                            <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Что будем отслеживать?" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="Sni-tz-t5y">
+                                <rect key="frame" x="121.66666666666669" y="500" width="150" height="15"/>
+                                <fontDescription key="fontDescription" type="system" weight="medium" pointSize="12"/>
+                                <color key="textColor" white="0.0" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+                                <nil key="highlightedColor"/>
+                            </label>
+                        </subviews>
                         <viewLayoutGuide key="safeArea" id="6Tk-OE-BBY"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                        <constraints>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="KPf-78-Js3" secondAttribute="trailing" constant="16" id="2NC-Mv-GHl"/>
+                            <constraint firstAttribute="top" secondItem="n7I-it-shM" secondAttribute="top" constant="-45" id="G4x-Xb-m2I"/>
+                            <constraint firstItem="hRp-9T-5Fs" firstAttribute="top" secondItem="KPf-78-Js3" secondAttribute="bottom" constant="220" id="HUk-3Z-oS6"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="WsO-op-Eio" secondAttribute="trailing" constant="105" id="V5x-xe-IpZ"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="trailing" secondItem="84k-ns-nNP" secondAttribute="trailing" constant="16" id="a2p-rF-edg"/>
+                            <constraint firstItem="84k-ns-nNP" firstAttribute="centerY" secondItem="n7I-it-shM" secondAttribute="centerY" id="dIi-Op-vTI"/>
+                            <constraint firstItem="Sni-tz-t5y" firstAttribute="top" secondItem="hRp-9T-5Fs" secondAttribute="bottom" constant="8" id="jch-H4-pF2"/>
+                            <constraint firstItem="WsO-op-Eio" firstAttribute="top" secondItem="n7I-it-shM" secondAttribute="bottom" constant="1" id="k33-LW-w0j"/>
+                            <constraint firstItem="KPf-78-Js3" firstAttribute="top" secondItem="WsO-op-Eio" secondAttribute="bottom" constant="7" id="mb8-jr-aYO"/>
+                            <constraint firstItem="hRp-9T-5Fs" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="qE8-cu-cvc"/>
+                            <constraint firstItem="6Tk-OE-BBY" firstAttribute="leading" secondItem="KPf-78-Js3" secondAttribute="leading" constant="-16" id="qoI-0C-BTV"/>
+                            <constraint firstItem="n7I-it-shM" firstAttribute="leading" secondItem="8bC-Xf-vdC" secondAttribute="leading" constant="6" id="u8u-8s-h8F"/>
+                            <constraint firstItem="Sni-tz-t5y" firstAttribute="centerX" secondItem="6Tk-OE-BBY" secondAttribute="centerX" id="xYK-XF-0Xj"/>
+                            <constraint firstItem="WsO-op-Eio" firstAttribute="leading" secondItem="6Tk-OE-BBY" secondAttribute="leading" constant="16" id="xxH-kc-gEb"/>
+                        </constraints>
                     </view>
+                    <tabBarItem key="tabBarItem" title="" image="TabBarTrackers" id="Ca3-pf-lyB"/>
                 </viewController>
                 <placeholder placeholderIdentifier="IBFirstResponder" id="dkx-z0-nzr" sceneMemberID="firstResponder"/>
             </objects>
+            <point key="canvasLocation" x="72.51908396946564" y="-34.507042253521128"/>
+        </scene>
+        <!--View Controller-->
+        <scene sceneID="ALx-N1-raa">
+            <objects>
+                <viewController id="noM-bF-iY4" sceneMemberID="viewController">
+                    <view key="view" contentMode="scaleToFill" id="Pv9-l7-H9i">
+                        <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
+                        <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
+                        <viewLayoutGuide key="safeArea" id="3rp-4y-jH2"/>
+                        <color key="backgroundColor" systemColor="systemBackgroundColor"/>
+                    </view>
+                    <tabBarItem key="tabBarItem" title="" image="TapBarStatistic" id="ERF-t0-0aH"/>
+                </viewController>
+                <placeholder placeholderIdentifier="IBFirstResponder" id="Sji-Gp-G2Q" userLabel="First Responder" customClass="UIResponder" sceneMemberID="firstResponder"/>
+            </objects>
+            <point key="canvasLocation" x="73" y="694"/>
         </scene>
     </scenes>
+    <resources>
+        <image name="Button plus" width="42" height="42"/>
+        <image name="Star" width="80" height="80"/>
+        <image name="TabBarTrackers" width="75" height="50"/>
+        <image name="TapBarStatistic" width="75" height="50"/>
+        <systemColor name="systemBackgroundColor">
+            <color white="1" alpha="1" colorSpace="custom" customColorSpace="genericGamma22GrayColorSpace"/>
+        </systemColor>
+    </resources>
 </document>

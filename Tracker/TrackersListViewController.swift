@@ -1,13 +1,6 @@
-//
-//  ViewController.swift
-//  Tracker
-//
-//  Created by Alexey Ratushnyak on 26.10.2025.
-//
-
 import UIKit
 
-class ViewController: UIViewController {
+class TrackerListViewController: UIViewController {
 
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -16,4 +9,3 @@ class ViewController: UIViewController {
 
 
 }
-
