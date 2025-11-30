@@ -26,10 +26,10 @@
             </objects>
             <point key="canvasLocation" x="-805" y="477"/>
         </scene>
-        <!--Tracker List View Controller-->
+        <!--Tracker View Controller-->
         <scene sceneID="tne-QT-ifu">
             <objects>
-                <viewController id="BYZ-38-t0r" customClass="TrackerListViewController" customModule="Tracker" sceneMemberID="viewController">
+                <viewController id="BYZ-38-t0r" customClass="TrackerViewController" customModule="Tracker" customModuleProvider="target" sceneMemberID="viewController">
                     <view key="view" contentMode="scaleToFill" id="8bC-Xf-vdC">
                         <rect key="frame" x="0.0" y="0.0" width="393" height="852"/>
                         <autoresizingMask key="autoresizingMask" widthSizable="YES" heightSizable="YES"/>
@@ -58,6 +58,7 @@
                                     <constraint firstAttribute="width" constant="77" id="gMg-8K-bqb"/>
                                     <constraint firstAttribute="height" constant="34" id="koN-4w-D8B"/>
                                 </constraints>
+                                <locale key="locale" localeIdentifier="ru"/>
                             </datePicker>
                             <label opaque="NO" userInteractionEnabled="NO" contentMode="left" horizontalHuggingPriority="251" verticalHuggingPriority="251" text="Трекеры" textAlignment="natural" lineBreakMode="tailTruncation" baselineAdjustment="alignBaselines" adjustsFontSizeToFit="NO" translatesAutoresizingMaskIntoConstraints="NO" id="WsO-op-Eio">
                                 <rect key="frame" x="16" y="88" width="272" height="41"/>
