@@ -8,11 +8,8 @@ class TrackersViewController: UIViewController {
     let datePicker = UIDatePicker()
     let searchBar = UISearchBar()
     let trackersLabel = UILabel()
+    var tracker: Tracker?
 
-
-
-//    var emptyStateLabel: UILabel!
-    
     
     override func viewDidLoad() {
         super.viewDidLoad()
@@ -86,7 +83,7 @@ class TrackersViewController: UIViewController {
         // Показываем заголовок
         let trackersLabelIsEmpty = UILabel()
         trackersLabelIsEmpty.text = "Что будем отслеживать?"
-        trackersLabelIsEmpty.font = UIFont.systemFont(ofSize: 12)
+        trackersLabelIsEmpty.font = .systemFont(ofSize: 12, weight: .medium)
         trackersLabelIsEmpty.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(trackersLabelIsEmpty)
         
@@ -103,13 +100,14 @@ class TrackersViewController: UIViewController {
     }
     
     @objc func addButtonTapped() {
-        print("Кнопка добавления трекера нажата. Добавляем. Показываем окошко с выбором новой категории и трекера")
         let vc = CreateTrackerViewController()
+        vc.trackerController = self
         let navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .pageSheet
         navController.modalTransitionStyle = .coverVertical
         
         present(navController, animated: true)
+        
     }
     
 
