@@ -29,13 +29,9 @@ final class ScheduleViewController: UIViewController {
         
         scheduleTableView.tableHeaderView = UIView(frame: .zero)
         scheduleTableView.tableFooterView = UIView(frame: .zero)
-        
-        
-        
     }
     
     func setupDoneButton() {
-        
         doneButton.backgroundColor = UIColor(named: "BlackColor")
         doneButton.layer.cornerRadius = 16
         doneButton.titleLabel?.font = .systemFont(ofSize: 16, weight: .medium)
@@ -58,14 +54,12 @@ final class ScheduleViewController: UIViewController {
     @objc func saveSchedule() {
         parentTrackerVC?.savedSchedule = scheduleIsOn
         parentTrackerVC?.updateTableView()
-        print("апдейтим кнопку после расписания")
         parentTrackerVC?.updateCreateButton()
         
         dismiss(animated: true)
     }
     
     func setupTableView() {
-        
         let scheduleTableViewContainer = UIView()
         scheduleTableViewContainer.backgroundColor = .clear
         scheduleTableViewContainer.layer.cornerRadius = 16
@@ -91,20 +85,15 @@ final class ScheduleViewController: UIViewController {
             scheduleTableView.trailingAnchor.constraint(equalTo: scheduleTableViewContainer.trailingAnchor),
             scheduleTableView.bottomAnchor.constraint(equalTo: scheduleTableViewContainer.bottomAnchor)
         ])
-        
-        
     }
     
     @objc func switchValueChanged(sender: UISwitch) {
         let tag = sender.tag
         let weekday = Weekdays.allCases[tag]
         scheduleIsOn[weekday] = sender.isOn
-        
-        
     }
 }
 extension ScheduleViewController: UITableViewDelegate {
-    
 }
 
 extension ScheduleViewController: UITableViewDataSource {
@@ -131,13 +120,10 @@ extension ScheduleViewController: UITableViewDataSource {
             cell.layer.cornerRadius = 16
         }
         
-        
         return cell
     }
     
     func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
         return 75
     }
-    
-    
 }

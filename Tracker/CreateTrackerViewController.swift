@@ -4,8 +4,6 @@ final class CreateTrackerViewController: UIViewController {
     
     let textField = UITextField()
     let tableView = UITableView(frame: .zero, style: .plain)
-//    var trackerCategory: [TrackerCategory] = []
-//    var trackers = [Tracker]()
     static let cellIdentifier = "cell"
     let buttonCancel = UIButton()
     let buttonCreate = UIButton()
@@ -14,13 +12,7 @@ final class CreateTrackerViewController: UIViewController {
     var constraintToLabelLimit: NSLayoutConstraint?
     var savedText: String?
     public var savedSchedule: [Weekdays: Bool] = [:]
-    var tracker: Tracker?
     weak var trackerController: TrackersViewController?
-  
-    
-    
-    
-    
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = .systemBackground
@@ -37,9 +29,6 @@ final class CreateTrackerViewController: UIViewController {
         setupCreateButton()
         setupCancelButton()
         characterLimitLabel.isHidden = true
- 
-
-   
     }
     
     func configureNavigationBar() {
@@ -70,9 +59,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     func updateCreateButton() {
-        // Проверяем, что текст не пуст и в расписании есть хотя бы один выбранный день
         let isScheduleNotEmpty = savedSchedule.contains { $0.value == true }
-        // Проверка на хотя бы один активный день в расписании
         let isTextNotEmpty = !(textField.text?.isEmpty ?? true)
         
         if isTextNotEmpty && isScheduleNotEmpty {
@@ -83,8 +70,6 @@ final class CreateTrackerViewController: UIViewController {
             buttonCreate.isEnabled = false
         }
     }
-
-    
 
     func setupCreateButton() {
         guard let grayColor = UIColor(named: "GrayColorForButton") else { return }
@@ -97,7 +82,6 @@ final class CreateTrackerViewController: UIViewController {
         buttonCreate.addTarget(self, action: #selector(createButtonTapped), for: .touchUpInside)
         
         view.addSubview(buttonCreate)
-        
         buttonCreate.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -105,40 +89,37 @@ final class CreateTrackerViewController: UIViewController {
             buttonCreate.widthAnchor.constraint(equalToConstant: 161),
             buttonCreate.heightAnchor.constraint(equalToConstant: 60),
             buttonCreate.bottomAnchor.constraint(equalTo: view.safeAreaLayoutGuide.bottomAnchor, constant: 0)
-            
         ])
-        
     }
     
     @objc private func createButtonTapped() {
-        
-        print("Нопка нажата")
-        
         saveNewTracker()
-
     }
     
     func saveNewTracker() {
-        print(savedText ?? "Теста точно нет")
         guard let text = savedText else {
-            print("Ошибка. Текст отсутствует")
-            return }
+            return
+        }
         
-        tracker = Tracker(id: UUID(),
+        let newTracker = Tracker(id: UUID(),
                           title: text,
                           color: nil,
                           emoji: nil,
                           schedule: savedSchedule)
-        trackerController?.tracker = tracker
         
+        let categoryTitle = "Важное"
+        guard let trackerController = trackerController,
+              let categoryIndex = trackerController.categories.firstIndex(where: { $0.title == categoryTitle }) else { return }
+        let existingCategory = trackerController.categories[categoryIndex]
+        let updatedCategory = TrackerCategory(title: categoryTitle,
+                                          trackers: existingCategory.trackers + [newTracker])
+        var newCategory = trackerController.categories
+        newCategory[categoryIndex] = updatedCategory
+        
+        trackerController.categories = newCategory
+        trackerController.checkingForTrackers()
         dismiss(animated: true)
-        
-        
-        
     }
-    
-    
-    
     func setupCancelButton() {
         guard let redColor = UIColor(named: "RedColor") else {
             return
@@ -149,13 +130,10 @@ final class CreateTrackerViewController: UIViewController {
         buttonCancel.clipsToBounds = true
         buttonCancel.setTitleColor(redColor, for: .normal)
         buttonCancel.titleLabel?.font = UIFont.systemFont(ofSize: 16, weight: .medium)
-        
         buttonCancel.setTitle("Отменить", for: .normal)
-        
         buttonCancel.addTarget(self, action: #selector(dismissView), for: .touchUpInside)
         
         view.addSubview(buttonCancel)
-        
         buttonCancel.translatesAutoresizingMaskIntoConstraints = false
         
         NSLayoutConstraint.activate([
@@ -164,13 +142,10 @@ final class CreateTrackerViewController: UIViewController {
             buttonCancel.trailingAnchor.constraint(equalTo: buttonCreate.leadingAnchor, constant: -8),
             buttonCancel.heightAnchor.constraint(equalToConstant: 60)
         ])
-        
     }
     
     @objc func dismissView() {
-        
         dismiss(animated: true)
-        
     }
     
     func updateTableView() {
@@ -182,9 +157,7 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     func setupTableView() {
-        
         let tableContainer = UIView()
-//        tableContainer.backgroundColor = UIColor(named: "LightGrayColor")
         tableContainer.backgroundColor = .clear
         tableContainer.layer.cornerRadius = 16
         tableContainer.clipsToBounds = true
@@ -193,20 +166,14 @@ final class CreateTrackerViewController: UIViewController {
         tableView.translatesAutoresizingMaskIntoConstraints = false
         tableView.separatorStyle = .singleLine
         tableView.separatorInset = UIEdgeInsets(top: 0, left: 16, bottom: 0, right: 16)
-        
 
         tableContainer.addSubview(tableView)
-        
         
         self.constraintToTextField = tableContainer.topAnchor.constraint(equalTo: textField.bottomAnchor, constant: 24)
         constraintToTextField!.priority = .required
         
         self.constraintToLabelLimit = tableContainer.topAnchor.constraint(equalTo: characterLimitLabel.bottomAnchor, constant: 24)
         constraintToLabelLimit!.priority = .defaultLow
-        
-
-        
-
 
         NSLayoutConstraint.activate([
             constraintToTextField!,
@@ -214,35 +181,24 @@ final class CreateTrackerViewController: UIViewController {
             tableContainer.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
             tableContainer.trailingAnchor.constraint(equalTo: view.trailingAnchor, constant: -16),
             tableContainer.heightAnchor.constraint(equalToConstant: 150),
-
             tableView.topAnchor.constraint(equalTo: tableContainer.topAnchor),
             tableView.leadingAnchor.constraint(equalTo: tableContainer.leadingAnchor),
             tableView.trailingAnchor.constraint(equalTo: tableContainer.trailingAnchor),
             tableView.bottomAnchor.constraint(equalTo: tableContainer.bottomAnchor)
-        
-               
-            
         ])
-
-        
     }
     
     func updateConstraint() {
-        
         if characterLimitLabel.isHidden {
             constraintToTextField?.priority = .required
             constraintToLabelLimit?.priority = .defaultLow
-        }
-        else {
+        } else {
             constraintToTextField?.priority = .defaultLow
             constraintToLabelLimit?.priority = .required
-            
         }
-            
     }
     
     func showTextField() {
-        
         textField.placeholder = "Введите название трекера"
         textField.backgroundColor = UIColor(named: "LightGrayColor")
         textField.font = UIFont.systemFont(ofSize: 17)
@@ -250,18 +206,14 @@ final class CreateTrackerViewController: UIViewController {
         textField.layer.cornerRadius = 16
         textField.leftView = UIView(frame: CGRect(x: 0, y: 0, width: 16, height: 0))
         textField.leftViewMode = .always
-        
         textField.rightView = UIView(frame: CGRect(x: 0, y: 0, width: 41, height: 0))
         textField.rightViewMode = .always
-
         
         view.addSubview(textField)
         textField.translatesAutoresizingMaskIntoConstraints = false
         
-        
         NSLayoutConstraint.activate([
             textField.topAnchor.constraint(equalTo: view.safeAreaLayoutGuide.topAnchor, constant: 24),
-//            textField.widthAnchor.constraint(equalToConstant: 343),
             textField.heightAnchor.constraint(equalToConstant: 75),
             textField.centerXAnchor.constraint(equalTo: view.centerXAnchor),
             textField.leadingAnchor.constraint(equalTo: view.leadingAnchor, constant: 16),
@@ -270,7 +222,6 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     func presentSchedule() {
-        
         let vc = ScheduleViewController()
         vc.parentTrackerVC = self
         vc.scheduleIsOn = self.savedSchedule
@@ -326,13 +277,9 @@ extension CreateTrackerViewController: UITableViewDataSource, UITableViewDelegat
 extension CreateTrackerViewController: UITextFieldDelegate {
     
     func textField(_ textField: UITextField, shouldChangeCharactersIn range: NSRange, replacementString string: String) -> Bool {
-        
         let curentText = textField.text ?? ""
         let updateText = (curentText as NSString).replacingCharacters(in: range, with: string)
         let charactersCount = updateText.count
-
-        
-        
         
         if charactersCount > 38 {
             characterLimitLabel.isHidden = false
@@ -345,8 +292,6 @@ extension CreateTrackerViewController: UITextFieldDelegate {
         } else {
             characterLimitLabel.isHidden = true
         }
-//        savedText = textField.text
-//        updateCreateButton()
         
         updateConstraint()
         
