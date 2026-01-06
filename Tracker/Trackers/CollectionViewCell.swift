@@ -1,12 +1,12 @@
 import UIKit
 
-class CustomCollectionViewCell: UICollectionViewCell {
+final class CustomCollectionViewCell: UICollectionViewCell {
     
-    var trackerTitle = UILabel()
-    var emoji = UILabel()
-    var cardFrame = UIView()
-    var buttonPlus = UIButton()
-    var dayCounter = UILabel()
+    private var trackerTitle = UILabel()
+    private var emoji = UILabel()
+    private var cardFrame = UIView()
+    private var buttonPlus = UIButton()
+    private var dayCounter = UILabel()
     weak var trackerController: TrackersViewController?
     var tracker: Tracker? {
         didSet {

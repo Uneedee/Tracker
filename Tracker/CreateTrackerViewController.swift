@@ -2,8 +2,8 @@ import UIKit
 
 final class CreateTrackerViewController: UIViewController {
     
-    let textField = UITextField()
-    let tableView = UITableView(frame: .zero, style: .plain)
+    private let textField = UITextField()
+    private let tableView = UITableView(frame: .zero, style: .plain)
     static let cellIdentifier = "cell"
     let buttonCancel = UIButton()
     let buttonCreate = UIButton()

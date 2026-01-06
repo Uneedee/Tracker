@@ -1,6 +1,6 @@
 import UIKit
 
-class TrackersViewController: UIViewController {
+final class TrackersViewController: UIViewController {
     private var emptyStateImageView: UIImageView?
     private var emptyStateLabel: UILabel?
     var categories: [TrackerCategory] = [
@@ -8,11 +8,11 @@ class TrackersViewController: UIViewController {
     ]
     
     var completedTrackers: [TrackerRecord] = []
-    let datePicker = UIDatePicker()
-    let searchBar = UISearchBar()
-    let trackersLabel = UILabel()
+    private let datePicker = UIDatePicker()
+    private let searchBar = UISearchBar()
+    private let trackersLabel = UILabel()
     var trackersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
-    let reuseIdentifierForCollectionViewCell = "collectionViewCellReuseIdentifier"
+    private let reuseIdentifierForCollectionViewCell = "collectionViewCellReuseIdentifier"
     var selectedDate: Date = Date()
 
     
@@ -26,7 +26,7 @@ class TrackersViewController: UIViewController {
         checkingForTrackers()
     }
     
-    func setupView() {
+    private func setupView() {
         setupDatePicker()
         setupAddButton()
         setupAndShowGeneralLabelofTrackers()
@@ -42,7 +42,7 @@ class TrackersViewController: UIViewController {
             setupTrackersCollection()
         }
     }
-    func setupTrackersCollection() {
+    private func setupTrackersCollection() {
         emptyStateImageView?.removeFromSuperview()
         emptyStateLabel?.removeFromSuperview()
         emptyStateImageView = nil
@@ -63,7 +63,7 @@ class TrackersViewController: UIViewController {
         trackersCollection.reloadData()
     }
     
-    func setupAndShowGeneralLabelofTrackers() {
+    private func setupAndShowGeneralLabelofTrackers() {
         trackersLabel.text = "Трекеры"
         trackersLabel.font = UIFont.systemFont(ofSize: 34, weight: .bold)
         trackersLabel.translatesAutoresizingMaskIntoConstraints = false
@@ -75,7 +75,7 @@ class TrackersViewController: UIViewController {
         ])
     }
     
-    func filteredCategories(for date: Date) -> [TrackerCategory] {
+    private func filteredCategories(for date: Date) -> [TrackerCategory] {
         let calendar = Calendar.current
         let weekday = calendar.component(.weekday, from: date)
         
@@ -103,7 +103,7 @@ class TrackersViewController: UIViewController {
         }
     }
     
-    func showSearchBar() {
+    private func showSearchBar() {
         searchBar.searchBarStyle = .minimal
         searchBar.translatesAutoresizingMaskIntoConstraints = false
         view.addSubview(searchBar)
@@ -117,7 +117,7 @@ class TrackersViewController: UIViewController {
         ])
     }
     
-    func setupAddButton() {
+    private func setupAddButton() {
         let addButton = UIBarButtonItem(
             image: UIImage(named: "ButtonPlus"),
             style: .plain,
@@ -127,14 +127,14 @@ class TrackersViewController: UIViewController {
         navigationItem.leftBarButtonItem = addButton
     }
     
-    func setupDatePicker() {
+    private func setupDatePicker() {
         datePicker.preferredDatePickerStyle = .compact
         datePicker.datePickerMode = .date
         datePicker.locale = Locale(identifier: "ru_RU")
         datePicker.addTarget(self, action: #selector(datePickerValueChanged(_:)), for: .valueChanged)
         navigationItem.rightBarButtonItem = UIBarButtonItem(customView: datePicker)
     }
-    func showEmptyStateView() {
+    private func showEmptyStateView() {
         if trackersCollection.superview != nil {
             trackersCollection.removeFromSuperview()
         }
@@ -167,7 +167,7 @@ class TrackersViewController: UIViewController {
         ])
     }
     
-    @objc func addButtonTapped() {
+    @objc private func addButtonTapped() {
         let vc = CreateTrackerViewController()
         vc.trackerController = self
         let navController = UINavigationController(rootViewController: vc)
@@ -176,7 +176,7 @@ class TrackersViewController: UIViewController {
         
         present(navController, animated: true)
     }
-    @objc func datePickerValueChanged(_ sender: UIDatePicker) {
+    @objc private func datePickerValueChanged(_ sender: UIDatePicker) {
         selectedDate = sender.date
         checkingForTrackers()
     }

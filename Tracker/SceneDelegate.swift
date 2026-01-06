@@ -21,20 +21,22 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
 
         trackersNavigationController.tabBarItem = UITabBarItem(
-            title: nil,
-            image: UIImage(named: "TabBarTrackers"),
+            title: "Трекеры",
+            image: UIImage(resource: .tabBarTrackers),
             selectedImage: nil
         )
 
         let statisticViewController = StatisticViewController()
         statisticViewController.tabBarItem = UITabBarItem(
-            title: nil,
-            image: UIImage(named: "TapBarStatistic"),
+            title: "Статистика",
+            image: UIImage(resource: .tapBarStatistic),
             selectedImage: nil
         )
 
         let tabBarController = UITabBarController()
         tabBarController.viewControllers = [trackersNavigationController, statisticViewController]
+        
+
 
 
         window?.rootViewController = tabBarController

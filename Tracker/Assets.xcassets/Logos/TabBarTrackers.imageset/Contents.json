@@ -1,17 +1,16 @@
 {
   "images" : [
     {
-      "filename" : "Tab Bar Item.png",
       "idiom" : "universal",
       "scale" : "1x"
     },
     {
-      "filename" : "Tab Bar Item (1).png",
+      "filename" : "ic 28x28.png",
       "idiom" : "universal",
       "scale" : "2x"
     },
     {
-      "filename" : "Tab Bar Item (2).png",
+      "filename" : "ic 28x28 (1).png",
       "idiom" : "universal",
       "scale" : "3x"
     }
