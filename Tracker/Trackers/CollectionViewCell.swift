@@ -3,10 +3,12 @@ import UIKit
 final class CustomCollectionViewCell: UICollectionViewCell {
     
     private var trackerTitle = UILabel()
+    private var emojiFrame = UIView()
     private var emoji = UILabel()
     private var cardFrame = UIView()
     private var buttonPlus = UIButton()
     private var dayCounter = UILabel()
+    private var color: UIColor?
     weak var trackerController: TrackersViewController?
     var tracker: Tracker? {
         didSet {
@@ -19,22 +21,33 @@ final class CustomCollectionViewCell: UICollectionViewCell {
         
         contentView.addSubview(cardFrame)
         cardFrame.addSubview(trackerTitle)
-        cardFrame.addSubview(emoji)
-        
+        cardFrame.addSubview(emojiFrame)
+        emojiFrame.addSubview(emoji)
         contentView.addSubview(buttonPlus)
         contentView.addSubview(dayCounter)
-        buttonPlus.addTarget(self, action: #selector(dayCounterValueChanged) , for: .touchUpInside)
         
-        cardFrame.backgroundColor = UIColor(named: "GreenColor")
-        buttonPlus.setImage(UIImage(named: "ButtonPlusForCard"), for: .normal)
+        buttonPlus.addTarget(self, action: #selector(dayCounterValueChanged) , for: .touchUpInside)
+        buttonPlus.layer.cornerRadius = 17
+        buttonPlus.layer.masksToBounds = true
+        let image = UIImage(
+            systemName: "plus",
+            withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+        )
+        buttonPlus.setImage(image, for: .normal)
+        buttonPlus.tintColor = .white
         
         dayCounter.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         dayCounter.textColor = UIColor(named: "BlackColor")
         trackerTitle.textColor = .white
         trackerTitle.font = UIFont.systemFont(ofSize: 12, weight: .medium)
         trackerTitle.numberOfLines = 2
+        emojiFrame.backgroundColor = UIColor.white.withAlphaComponent(0.3)
+        emojiFrame.layer.cornerRadius = 12
+        emojiFrame.layer.masksToBounds = true
+        emoji.font = .systemFont(ofSize: 16, weight: .medium)
         trackerTitle.translatesAutoresizingMaskIntoConstraints = false
         emoji.translatesAutoresizingMaskIntoConstraints = false
+        emojiFrame.translatesAutoresizingMaskIntoConstraints = false
         cardFrame.translatesAutoresizingMaskIntoConstraints = false
         buttonPlus.translatesAutoresizingMaskIntoConstraints = false
         dayCounter.translatesAutoresizingMaskIntoConstraints = false
@@ -50,10 +63,16 @@ final class CustomCollectionViewCell: UICollectionViewCell {
             trackerTitle.leadingAnchor.constraint(equalTo: cardFrame.leadingAnchor, constant: 12),
             trackerTitle.trailingAnchor.constraint(equalTo: cardFrame.trailingAnchor, constant: 12),
             trackerTitle.bottomAnchor.constraint(equalTo: cardFrame.bottomAnchor, constant: -12),
-            emoji.leadingAnchor.constraint(equalTo: cardFrame.leadingAnchor, constant: 12),
-            emoji.topAnchor.constraint(equalTo: cardFrame.topAnchor, constant: 12),
-            emoji.heightAnchor.constraint(equalToConstant: 24),
-            emoji.widthAnchor.constraint(equalToConstant: 24)
+
+        ])
+        
+        NSLayoutConstraint.activate([
+            emojiFrame.leadingAnchor.constraint(equalTo: cardFrame.leadingAnchor, constant: 12),
+            emojiFrame.topAnchor.constraint(equalTo: cardFrame.topAnchor, constant: 12),
+            emojiFrame.heightAnchor.constraint(equalToConstant: 24),
+            emojiFrame.widthAnchor.constraint(equalToConstant: 24),
+            emoji.centerXAnchor.constraint(equalTo: emojiFrame.centerXAnchor),
+            emoji.centerYAnchor.constraint(equalTo: emojiFrame.centerYAnchor)
         ])
         
         NSLayoutConstraint.activate([
@@ -70,6 +89,9 @@ final class CustomCollectionViewCell: UICollectionViewCell {
         
         trackerTitle.text = tracker.title
         emoji.text = tracker.emoji ?? "😍"
+        cardFrame.backgroundColor = tracker.color
+        buttonPlus.backgroundColor = tracker.color
+        
     }
     @objc func dayCounterValueChanged() {
         guard let tracker = tracker,
@@ -88,11 +110,23 @@ final class CustomCollectionViewCell: UICollectionViewCell {
         }
         
         if hasRecordForSelectedDate {
+            let image = UIImage(
+                systemName: "plus",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+            )
             controller.removeCompletedTracker(trackerId: tracker.id, date: selectedDate)
-            buttonPlus.setImage(UIImage(named: "ButtonPlusForCard"), for: .normal)
+            buttonPlus.setImage(image, for: .normal)
+            buttonPlus.tintColor = .white
+
         } else {
+            let image = UIImage(
+                systemName: "checkmark",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+            )
             controller.addCompletedTracker(trackerID: tracker.id, date: selectedDate)
-            buttonPlus.setImage(UIImage(named: "ButtonForCard"), for: .normal)
+            buttonPlus.setImage(image, for: .normal)
+            buttonPlus.tintColor = .white
+            buttonPlus.backgroundColor = tracker.color?.withAlphaComponent(0.3)
         }
         
         updateDayCounter()
@@ -120,9 +154,20 @@ final class CustomCollectionViewCell: UICollectionViewCell {
         }
         
         if hasRecordForSelectedDate {
-            buttonPlus.setImage(UIImage(named: "ButtonForCard"), for: .normal)
+            let image = UIImage(
+                systemName: "checkmark",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+            )
+            buttonPlus.setImage(image, for: .normal)
+            buttonPlus.tintColor = .white
+            buttonPlus.backgroundColor = tracker.color?.withAlphaComponent(0.3)
         } else {
-            buttonPlus.setImage(UIImage(named: "ButtonPlusForCard"), for: .normal)
+            let image = UIImage(
+                systemName: "plus",
+                withConfiguration: UIImage.SymbolConfiguration(pointSize: 16, weight: .bold)
+            )
+            buttonPlus.setImage(image, for: .normal)
+            buttonPlus.tintColor = .white
         }
     }
     required init?(coder: NSCoder) {
