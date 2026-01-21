@@ -16,8 +16,8 @@ final class CreateTrackerViewController: UIViewController {
     var selectedColor: UIColor?
     var scrollView = UIScrollView()
     public var savedSchedule: [Weekdays: Bool] = [:]
-    var selectedEmojiIndex: Int? // для отслеживания выбранной emoji ячейки
-    var selectedColorIndex: Int? // для отслеживания выбранной color ячейки
+    var selectedEmojiIndex: Int?
+    var selectedColorIndex: Int?
 
     let emojis = [
         "😊", "😻", "🌺", "🐶", "❤️", "😱",

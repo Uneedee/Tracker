@@ -6,6 +6,10 @@
 	objectVersion = 77;
 	objects = {
 
+/* Begin PBXBuildFile section */
+		24FEDAFF2F1ECD4200856ABE /* HabitTracker.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 24FEDAFD2F1ECD4200856ABE /* HabitTracker.xcdatamodeld */; };
+/* End PBXBuildFile section */
+
 /* Begin PBXContainerItemProxy section */
 		24FD807A2EAE915800A374D8 /* PBXContainerItemProxy */ = {
 			isa = PBXContainerItemProxy;
@@ -27,6 +31,7 @@
 		24FD80632EAE915700A374D8 /* Tracker.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Tracker.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		24FD80792EAE915800A374D8 /* TrackerTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		24FD80832EAE915800A374D8 /* TrackerUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = TrackerUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		24FEDAFE2F1ECD4200856ABE /* HabitTracker.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = HabitTracker.xcdatamodel; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFileSystemSynchronizedBuildFileExceptionSet section */
@@ -88,6 +93,7 @@
 		24FD805A2EAE915700A374D8 = {
 			isa = PBXGroup;
 			children = (
+				24FEDAFD2F1ECD4200856ABE /* HabitTracker.xcdatamodeld */,
 				24FD80652EAE915700A374D8 /* Tracker */,
 				24FD807C2EAE915800A374D8 /* TrackerTests */,
 				24FD80862EAE915800A374D8 /* TrackerUITests */,
@@ -249,6 +255,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				24FEDAFF2F1ECD4200856ABE /* HabitTracker.xcdatamodeld in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -571,6 +578,19 @@
 			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
+
+/* Begin XCVersionGroup section */
+		24FEDAFD2F1ECD4200856ABE /* HabitTracker.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				24FEDAFE2F1ECD4200856ABE /* HabitTracker.xcdatamodel */,
+			);
+			currentVersion = 24FEDAFE2F1ECD4200856ABE /* HabitTracker.xcdatamodel */;
+			path = HabitTracker.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 24FD805B2EAE915700A374D8 /* Project object */;
 }

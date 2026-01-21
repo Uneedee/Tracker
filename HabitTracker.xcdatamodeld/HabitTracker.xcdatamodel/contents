@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<model type="com.apple.IDECoreDataModeler.DataModel" documentVersion="1.0" lastSavedToolsVersion="24512" systemVersion="25C56" minimumToolsVersion="Automatic" sourceLanguage="Swift" usedWithSwiftData="YES" userDefinedModelVersionIdentifier="">
+    <entity name="TrackerCategoryFromTrackerCoreData" representedClassName="TrackerCategoryFromTrackerCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="title" attributeType="String"/>
+        <relationship name="trackers" toMany="YES" deletionRule="Nullify" destinationEntity="TrackerFromTrackerCoreData" inverseName="category" inverseEntity="TrackerFromTrackerCoreData"/>
+    </entity>
+    <entity name="TrackerFromTrackerCoreData" representedClassName="TrackerFromTrackerCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="color" attributeType="Transformable"/>
+        <attribute name="emoji" attributeType="String"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <attribute name="schedule" attributeType="Transformable"/>
+        <attribute name="title" attributeType="String"/>
+        <relationship name="category" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerCategoryFromTrackerCoreData" inverseName="trackers" inverseEntity="TrackerCategoryFromTrackerCoreData"/>
+        <relationship name="trackerRecord" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerRecordFromTrackerCoreData" inverseName="trackers" inverseEntity="TrackerRecordFromTrackerCoreData"/>
+    </entity>
+    <entity name="TrackerRecordFromTrackerCoreData" representedClassName="TrackerRecordFromTrackerCoreData" syncable="YES" codeGenerationType="class">
+        <attribute name="date" attributeType="Date" usesScalarValueType="NO"/>
+        <attribute name="id" attributeType="UUID" usesScalarValueType="NO"/>
+        <relationship name="trackers" maxCount="1" deletionRule="Nullify" destinationEntity="TrackerFromTrackerCoreData" inverseName="trackerRecord" inverseEntity="TrackerFromTrackerCoreData"/>
+    </entity>
+</model>

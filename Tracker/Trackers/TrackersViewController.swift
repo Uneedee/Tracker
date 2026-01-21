@@ -1,6 +1,8 @@
 import UIKit
+import CoreData
 
 final class TrackersViewController: UIViewController {
+    private let context: NSManagedObjectContext
     private var emptyStateImageView: UIImageView?
     private var emptyStateLabel: UILabel?
     var categories: [TrackerCategory] = [
@@ -14,7 +16,16 @@ final class TrackersViewController: UIViewController {
     var trackersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let reuseIdentifierForCollectionViewCell = "collectionViewCellReuseIdentifier"
     var selectedDate: Date = Date()
-
+    
+    init(context: NSManagedObjectContext) {
+        self.context = context
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
