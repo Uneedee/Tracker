@@ -1,12 +1,4 @@
-//
-//  SceneDelegate.swift
-//  Tracker
-//
-//  Created by Alexey Ratushnyak on 26.10.2025.
-//
-
 import UIKit
-import CoreData
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
 
@@ -20,7 +12,15 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let context = appDelegate.persistentContainer.viewContext
 
-        let trackersViewController = TrackersViewController(context: context)
+        guard let trackerStore = try? TrackerStore(context: context) else {
+            fatalError("Не удалось создать TrackerStore")
+        }
+        let trackerRecordStore = TrackerRecordStore(context: context)
+        let trackerCategoryStore = TrackerCategoryStore(context: context)
+        
+        let trackersViewController = TrackersViewController(categoryStore: trackerCategoryStore,
+                                                            recordStore: trackerRecordStore,
+                                                            trackerStore: trackerStore)
 
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
 

@@ -1,8 +1,13 @@
 import UIKit
-import CoreData
 
 final class TrackersViewController: UIViewController {
-    private let context: NSManagedObjectContext
+    
+    private let categoryStore: TrackerCategoryStore
+    private let recordStore: TrackerRecordStore
+    private let trackerStore: TrackerStore
+    
+
+    
     private var emptyStateImageView: UIImageView?
     private var emptyStateLabel: UILabel?
     var categories: [TrackerCategory] = [
@@ -16,9 +21,13 @@ final class TrackersViewController: UIViewController {
     var trackersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let reuseIdentifierForCollectionViewCell = "collectionViewCellReuseIdentifier"
     var selectedDate: Date = Date()
-    
-    init(context: NSManagedObjectContext) {
-        self.context = context
+     
+    init(categoryStore: TrackerCategoryStore,
+         recordStore: TrackerRecordStore,
+         trackerStore: TrackerStore ) {
+        self.categoryStore = categoryStore
+        self.recordStore = recordStore
+        self.trackerStore = trackerStore
         super.init(nibName: nil, bundle: nil)
     }
     
@@ -27,9 +36,12 @@ final class TrackersViewController: UIViewController {
     }
     
     
+    
     override func viewDidLoad() {
         super.viewDidLoad()
+        trackerStore.delegate = self
         setupView()
+        
         trackersCollection.delegate = self
         trackersCollection.dataSource = self
         trackersCollection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: self.reuseIdentifierForCollectionViewCell)
@@ -181,6 +193,7 @@ final class TrackersViewController: UIViewController {
     @objc private func addButtonTapped() {
         let vc = CreateTrackerViewController()
         vc.trackerController = self
+        vc.trackerStore = trackerStore
         let navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .pageSheet
         navController.modalTransitionStyle = .coverVertical
@@ -201,6 +214,10 @@ final class TrackersViewController: UIViewController {
         completedTrackers.removeAll { completedTracker in
             completedTracker.trackerId == trackerId && Calendar.current.isDate(completedTracker.date, inSameDayAs: date)
         }
+    }
+    
+    func loadCategories() {
+        
     }
     
 }
@@ -252,4 +269,13 @@ extension TrackersViewController: UICollectionViewDataSource {
         
         return view
     }
+}
+
+extension TrackersViewController: TrackerStoreDelegate {
+    func storeDidUpdate(_ store: TrackerStore) {
+        loadCategories()
+        checkingForTrackers()
+    }
+    
+    
 }
