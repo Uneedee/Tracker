@@ -12,11 +12,11 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
             let context = appDelegate.persistentContainer.viewContext
 
-        guard let trackerStore = try? TrackerStore(context: context) else {
-            fatalError("Не удалось создать TrackerStore")
+        guard let trackerStore = try? TrackerStore(context: context),
+              let trackerRecordStore = try? TrackerRecordStore(context: context),
+              let trackerCategoryStore = try? TrackerCategoryStore(context: context) else {
+            fatalError("Не удалось создать stores")
         }
-        let trackerRecordStore = TrackerRecordStore(context: context)
-        let trackerCategoryStore = TrackerCategoryStore(context: context)
         
         let trackersViewController = TrackersViewController(categoryStore: trackerCategoryStore,
                                                             recordStore: trackerRecordStore,
@@ -73,6 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.saveContext()
     }
 
 

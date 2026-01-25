@@ -182,7 +182,6 @@ final class CreateTrackerViewController: UIViewController {
             try trackerStore.createTracker(tracker: newTracker, categoryTitle: categoryTitle)
             dismiss(animated: true)
         } catch {
-            // Обработка ошибки
             print("Ошибка сохранения: \(error)")
         }
     }

@@ -10,11 +10,11 @@ final class TrackersViewController: UIViewController {
     
     private var emptyStateImageView: UIImageView?
     private var emptyStateLabel: UILabel?
-    var categories: [TrackerCategory] = [
-        TrackerCategory(title: "Важное", trackers: [])
-    ]
+    var categories: [TrackerCategory] = []
     
-    var completedTrackers: [TrackerRecord] = []
+    var completedTrackers: [TrackerRecord] {
+        return recordStore.records
+    }
     private let datePicker = UIDatePicker()
     private let searchBar = UISearchBar()
     private let trackersLabel = UILabel()
@@ -40,12 +40,15 @@ final class TrackersViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
         trackerStore.delegate = self
+        categoryStore.delegate = self
+        recordStore.delegate = self
         setupView()
         
         trackersCollection.delegate = self
         trackersCollection.dataSource = self
         trackersCollection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: self.reuseIdentifierForCollectionViewCell)
         trackersCollection.register(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        loadCategories()
         checkingForTrackers()
     }
     
@@ -205,19 +208,24 @@ final class TrackersViewController: UIViewController {
         checkingForTrackers()
     }
     
-    func addCompletedTracker(trackerID: UUID, date: Date){
-        let record = TrackerRecord(trackerId: trackerID, date: date)
-        completedTrackers.append(record)
+    func addCompletedTracker(trackerID: UUID, date: Date) {
+        do {
+            try recordStore.addRecord(trackerId: trackerID, date: date)
+        } catch {
+            print("Ошибка добавления записи: \(error)")
+        }
     }
     
     func removeCompletedTracker(trackerId: UUID, date: Date) {
-        completedTrackers.removeAll { completedTracker in
-            completedTracker.trackerId == trackerId && Calendar.current.isDate(completedTracker.date, inSameDayAs: date)
+        do {
+            try recordStore.removeRecord(trackerId: trackerId, date: date)
+        } catch {
+            print("Ошибка удаления записи: \(error)")
         }
     }
     
     func loadCategories() {
-        
+        categories = categoryStore.categories
     }
     
 }
@@ -276,6 +284,17 @@ extension TrackersViewController: TrackerStoreDelegate {
         loadCategories()
         checkingForTrackers()
     }
-    
-    
+}
+
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func storeDidUpdate(_ store: TrackerCategoryStore) {
+        loadCategories()
+        checkingForTrackers()
+    }
+}
+
+extension TrackersViewController: TrackerRecordStoreDelegate {
+    func storeDidUpdate(_ store: TrackerRecordStore) {
+        trackersCollection.reloadData()
+    }
 }
