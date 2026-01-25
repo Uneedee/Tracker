@@ -1,28 +1,54 @@
 import UIKit
 
 final class TrackersViewController: UIViewController {
+    
+    private let categoryStore: TrackerCategoryStore
+    private let recordStore: TrackerRecordStore
+    private let trackerStore: TrackerStore
+    
+
+    
     private var emptyStateImageView: UIImageView?
     private var emptyStateLabel: UILabel?
-    var categories: [TrackerCategory] = [
-        TrackerCategory(title: "Важное", trackers: [])
-    ]
+    var categories: [TrackerCategory] = []
     
-    var completedTrackers: [TrackerRecord] = []
+    var completedTrackers: [TrackerRecord] {
+        return recordStore.records
+    }
     private let datePicker = UIDatePicker()
     private let searchBar = UISearchBar()
     private let trackersLabel = UILabel()
     var trackersCollection = UICollectionView(frame: .zero, collectionViewLayout: UICollectionViewFlowLayout())
     private let reuseIdentifierForCollectionViewCell = "collectionViewCellReuseIdentifier"
     var selectedDate: Date = Date()
-
+     
+    init(categoryStore: TrackerCategoryStore,
+         recordStore: TrackerRecordStore,
+         trackerStore: TrackerStore ) {
+        self.categoryStore = categoryStore
+        self.recordStore = recordStore
+        self.trackerStore = trackerStore
+        super.init(nibName: nil, bundle: nil)
+    }
+    
+    required init?(coder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
+    
     
     override func viewDidLoad() {
         super.viewDidLoad()
+        trackerStore.delegate = self
+        categoryStore.delegate = self
+        recordStore.delegate = self
         setupView()
+        
         trackersCollection.delegate = self
         trackersCollection.dataSource = self
         trackersCollection.register(CustomCollectionViewCell.self, forCellWithReuseIdentifier: self.reuseIdentifierForCollectionViewCell)
         trackersCollection.register(SupplementaryView.self, forSupplementaryViewOfKind: UICollectionView.elementKindSectionHeader, withReuseIdentifier: "header")
+        loadCategories()
         checkingForTrackers()
     }
     
@@ -170,6 +196,7 @@ final class TrackersViewController: UIViewController {
     @objc private func addButtonTapped() {
         let vc = CreateTrackerViewController()
         vc.trackerController = self
+        vc.trackerStore = trackerStore
         let navController = UINavigationController(rootViewController: vc)
         navController.modalPresentationStyle = .pageSheet
         navController.modalTransitionStyle = .coverVertical
@@ -181,15 +208,24 @@ final class TrackersViewController: UIViewController {
         checkingForTrackers()
     }
     
-    func addCompletedTracker(trackerID: UUID, date: Date){
-        let record = TrackerRecord(trackerId: trackerID, date: date)
-        completedTrackers.append(record)
+    func addCompletedTracker(trackerID: UUID, date: Date) {
+        do {
+            try recordStore.addRecord(trackerId: trackerID, date: date)
+        } catch {
+            print("Ошибка добавления записи: \(error)")
+        }
     }
     
     func removeCompletedTracker(trackerId: UUID, date: Date) {
-        completedTrackers.removeAll { completedTracker in
-            completedTracker.trackerId == trackerId && Calendar.current.isDate(completedTracker.date, inSameDayAs: date)
+        do {
+            try recordStore.removeRecord(trackerId: trackerId, date: date)
+        } catch {
+            print("Ошибка удаления записи: \(error)")
         }
+    }
+    
+    func loadCategories() {
+        categories = categoryStore.categories
     }
     
 }
@@ -240,5 +276,25 @@ extension TrackersViewController: UICollectionViewDataSource {
         view.titleLabel.text = filtered[indexPath.section].title
         
         return view
+    }
+}
+
+extension TrackersViewController: TrackerStoreDelegate {
+    func storeDidUpdate(_ store: TrackerStore) {
+        loadCategories()
+        checkingForTrackers()
+    }
+}
+
+extension TrackersViewController: TrackerCategoryStoreDelegate {
+    func storeDidUpdate(_ store: TrackerCategoryStore) {
+        loadCategories()
+        checkingForTrackers()
+    }
+}
+
+extension TrackersViewController: TrackerRecordStoreDelegate {
+    func storeDidUpdate(_ store: TrackerRecordStore) {
+        trackersCollection.reloadData()
     }
 }

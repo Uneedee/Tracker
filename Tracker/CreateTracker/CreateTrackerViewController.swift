@@ -16,8 +16,9 @@ final class CreateTrackerViewController: UIViewController {
     var selectedColor: UIColor?
     var scrollView = UIScrollView()
     public var savedSchedule: [Weekdays: Bool] = [:]
-    var selectedEmojiIndex: Int? // для отслеживания выбранной emoji ячейки
-    var selectedColorIndex: Int? // для отслеживания выбранной color ячейки
+    var selectedEmojiIndex: Int?
+    var selectedColorIndex: Int?
+    var trackerStore: TrackerStore?
 
     let emojis = [
         "😊", "😻", "🌺", "🐶", "❤️", "😱",
@@ -166,9 +167,8 @@ final class CreateTrackerViewController: UIViewController {
     }
     
     func saveNewTracker() {
-        guard let text = savedText else {
-            return
-        }
+        guard let text = savedText,
+              let trackerStore = trackerStore else { return }
         
         let newTracker = Tracker(id: UUID(),
                                  title: text,
@@ -177,18 +177,15 @@ final class CreateTrackerViewController: UIViewController {
                                  schedule: savedSchedule)
         
         let categoryTitle = "Важное"
-        guard let trackerController = trackerController,
-              let categoryIndex = trackerController.categories.firstIndex(where: { $0.title == categoryTitle }) else { return }
-        let existingCategory = trackerController.categories[categoryIndex]
-        let updatedCategory = TrackerCategory(title: categoryTitle,
-                                              trackers: existingCategory.trackers + [newTracker])
-        var newCategory = trackerController.categories
-        newCategory[categoryIndex] = updatedCategory
         
-        trackerController.categories = newCategory
-        trackerController.checkingForTrackers()
-        dismiss(animated: true)
+        do {
+            try trackerStore.createTracker(tracker: newTracker, categoryTitle: categoryTitle)
+            dismiss(animated: true)
+        } catch {
+            print("Ошибка сохранения: \(error)")
+        }
     }
+    
     func setupCancelButton() {
         guard let redColor = UIColor(named: "RedColor") else {
             return

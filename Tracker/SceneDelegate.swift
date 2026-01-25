@@ -1,10 +1,3 @@
-//
-//  SceneDelegate.swift
-//  Tracker
-//
-//  Created by Alexey Ratushnyak on 26.10.2025.
-//
-
 import UIKit
 
 class SceneDelegate: UIResponder, UIWindowSceneDelegate {
@@ -15,8 +8,19 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
     func scene(_ scene: UIScene, willConnectTo session: UISceneSession, options connectionOptions: UIScene.ConnectionOptions) {
         guard let windowScene = (scene as? UIWindowScene) else { return }
         window = UIWindow(windowScene: windowScene)
+        
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+            let context = appDelegate.persistentContainer.viewContext
 
-        let trackersViewController = TrackersViewController()
+        guard let trackerStore = try? TrackerStore(context: context),
+              let trackerRecordStore = try? TrackerRecordStore(context: context),
+              let trackerCategoryStore = try? TrackerCategoryStore(context: context) else {
+            fatalError("Не удалось создать stores")
+        }
+        
+        let trackersViewController = TrackersViewController(categoryStore: trackerCategoryStore,
+                                                            recordStore: trackerRecordStore,
+                                                            trackerStore: trackerStore)
 
         let trackersNavigationController = UINavigationController(rootViewController: trackersViewController)
 
@@ -69,6 +73,8 @@ class SceneDelegate: UIResponder, UIWindowSceneDelegate {
         // Called as the scene transitions from the foreground to the background.
         // Use this method to save data, release shared resources, and store enough scene-specific state information
         // to restore the scene back to its current state.
+        guard let appDelegate = UIApplication.shared.delegate as? AppDelegate else { return }
+        appDelegate.saveContext()
     }
 
 
